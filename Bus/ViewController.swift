@@ -11,25 +11,42 @@ import CoreLocation
 import GoogleMaps
 import GooglePlacePicker
 
-
-struct Sample: Codable {
-    let title: String
-    let name: String
-    let count: Int
-}
-
-func createJSON() -> String {
-    let sample = Sample(title: "Sir", name: "Frid", count: 4)
-    let data = try! JSONEncoder().encode(sample)
-    return String(data: data, encoding: .utf8)!
-}
-
-func decodeJSON(_ json: String) -> Sample? {
-    let data = json.data(using: .utf8)!
-    let sample = try! JSONDecoder().decode(Sample.self, from: data)
-    return sample
-}
-
+/*
+ 
+ A little description of What I was able to do in the short time I worked on this code test.
+ 
+ ***** The User Interface
+ -  I wanted to implement a beautiful design to the project as I strongly believe that design is one of the most important things.
+    Taxi applications, Uber, Lyft, etc.. have all followed a design of just a mapView and a rounded corner uiview on the bottom center. This
+    is the design I decided to go with as well.
+ 
+ -  I also used a custom map interface given by Google. I decided to go with a light gray color for the map and also burgundy boxes for each bus stop(which you can see when
+    you zoom deep in the current location and destination markers. You can find that custom implementation given
+    by Google in the "style.json" file.
+ 
+ -  I also wanted to implement an animation once the user selects the "Destination" textField
+    The animation will scroll up the destination view with the keyboard popping up.
+    The table view that you see with the San Francisco, CA was supposed to be a Google Places API search. i.e.
+    When the user begins to type S A, the table view will start to populate with cities or places like
+    San Francisco, San Diego, Santa Clara, etc..
+ 
+ -  When the user taps return(or cancel, not yet implemented) the destination view will scroll back down to it's previous position with a brand new
+    bus route(unless chosen cancel) given by the fastest and best bus route from Google Destination API
+ 
+ 
+ ***** API/Frameworks
+ -  Unfortunately I was not able to figure out how to use the Google Transit API or the 511 API in the short time I had. I have never worked with an
+    API that was structured in that way.
+ 
+ -  What I was able to do was use the Google Directions API in which I could make an HTTP Request using my API Key and some optional calls like transit_mode
+    and the bus route.
+ 
+ -  Core Location is what I used to grab the user's location. As of now, not knowing if you will be testing this in the simulator or on a real device, the option
+    will not actually grab your location because I have hard coded Apple Park as the user's location and Google HQ as the destination(destination can be changed though)
+ 
+ -  I decided to go with Google Maps instead of Apple Maps due to the custom look that I could achieve with Google Maps
+ 
+ */
 
 
 class ViewController: UIViewController, CLLocationManagerDelegate, UIGestureRecognizerDelegate {
@@ -79,7 +96,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIGestureReco
     
     let toImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "oval")
+        imageView.image = UIImage(named: "Oval")
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
@@ -150,8 +167,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIGestureReco
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let json = createJSON()
-        let result = decodeJSON(json)
         
         setupMapView()
         
@@ -194,9 +209,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIGestureReco
     
     
     
-    
-    
-    
     // MARK: Method(s)
     private func setupMapView() {
         // Set up and initialize the Google MapView
@@ -222,7 +234,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIGestureReco
             print(error)
         }
         
-        loadMapView(withURL: "https://maps.googleapis.com/maps/api/directions/json?origin=Apple+Park&destination=Sap+Center&mode=transit&transit_mode=bus&key=\(Constants.googleMapsAPIKey)")
+        loadMapView(withURL: "https://maps.googleapis.com/maps/api/directions/json?origin=Apple+Park&destination=Adobe+Inc&mode=transit&transit_mode=bus&key=\(Constants.googleMapsAPIKey)")
         
     }
     
@@ -290,10 +302,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UIGestureReco
                         
                         var markers = [GMSMarker]()
                         
-                        let startMarker = self.createMarker(withTitle: "Alan", position: CLLocationCoordinate2D(latitude: startLocation.latitude, longitude: startLocation.longitude), icon: UIImage(named: "current_location_point")!)
+                        let startMarker = self.createMarker(withTitle: "Apple Park", position: CLLocationCoordinate2D(latitude: startLocation.latitude, longitude: startLocation.longitude), icon: UIImage(named: "current_location_point")!)
                         startMarker.map = self.mapView
                         
-                        let endMarker = self.createMarker(withTitle: "Sargon", position: CLLocationCoordinate2D(latitude: endLocation.latitude, longitude: endLocation.longitude), icon: UIImage(named: "map_point")!)
+                        let endMarker = self.createMarker(withTitle: "Adobe Inc.", position: CLLocationCoordinate2D(latitude: endLocation.latitude, longitude: endLocation.longitude), icon: UIImage(named: "map_point")!)
                         endMarker.map = self.mapView
                         
                         markers.append(startMarker)

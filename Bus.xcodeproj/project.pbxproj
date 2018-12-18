@@ -71,13 +71,13 @@
 			children = (
 				0656740E21C8B05C0075A109 /* AppDelegate.swift */,
 				0656741021C8B05C0075A109 /* ViewController.swift */,
+				0656742021C8B1820075A109 /* Extensions.swift */,
+				0656742221C8B1A00075A109 /* Constants.swift */,
+				0656742421C8B1C70075A109 /* PlacesCell.swift */,
 				0656741221C8B05C0075A109 /* Main.storyboard */,
 				0656741521C8B05C0075A109 /* Assets.xcassets */,
 				0656741721C8B05C0075A109 /* LaunchScreen.storyboard */,
 				0656741A21C8B05C0075A109 /* Info.plist */,
-				0656742021C8B1820075A109 /* Extensions.swift */,
-				0656742221C8B1A00075A109 /* Constants.swift */,
-				0656742421C8B1C70075A109 /* PlacesCell.swift */,
 				0656742621C8B1E30075A109 /* style.json */,
 			);
 			path = Bus;
